@@ -1,0 +1,12 @@
+@import './sass/variables';
+@import './sass//mixins';
+
+.interactive-comment-section {
+    @include width-and-height(100dvw, 100dvh);
+    @include flex-container(column, center, center, 1.6rem);
+    background-color: $very-light-gray;
+
+    &__comments-container {
+        @include flex-container(column, center, center, 1.6rem);
+    }
+}

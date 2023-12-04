@@ -1,0 +1,30 @@
+@import '../../sass/variables';
+@import '../../sass/mixins';
+
+.reaction-counter {
+    @include flex-container(column, space-evenly, center);
+    @include width-and-height(2.8rem, 80%);
+    background-color: $very-light-gray;
+    border-radius: 0.7rem;
+
+    &__img-container {
+        @include flex-container(column, center, center);
+        @include width-and-height(1.6rem, 1.6rem);
+
+        img {
+            @include width-and-height(0.8rem, 0.8rem);
+        }
+
+        img[src='/src/assets/images/icon-minus.svg'] {
+            @include width-and-height(0.8rem, 0.3rem);
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__count {
+        color: $moderate-blue;
+    }
+}

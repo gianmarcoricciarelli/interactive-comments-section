@@ -1,0 +1,37 @@
+@import '../../../sass/mixins';
+@import '../../../sass/variables';
+
+.call-to-actions {
+    @include flex-container(row, center, center);
+
+    p {
+        font-weight: 500;
+        color: $moderate-blue;
+    }
+
+    &__edit-cta {
+        @include flex-container(row, center, center, 0.8rem);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__personal-ctas {
+        @include flex-container(row, center, center, 2.4rem);
+
+        .personal-ctas__cta {
+            @include flex-container(row, center, center, 0.8rem);
+
+            &:first-child {
+                p {
+                    color: $soft-red;
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

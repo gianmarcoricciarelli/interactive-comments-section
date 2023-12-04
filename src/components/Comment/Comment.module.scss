@@ -1,0 +1,30 @@
+@import '../../sass/mixins';
+@import '../../sass/variables';
+
+.comment {
+    @include width-and-height(58rem, 14rem);
+    @include flex-container(row, flex-start, flex-start, 1.6rem);
+    background-color: $white;
+    padding: 2rem 2rem 0rem 2rem;
+    border-radius: 0.7rem;
+}
+
+.vertical-line-and-replies {
+    width: 58rem;
+    @include flex-container(row, flex-end, flex-start, 2.6rem);
+
+    &__line {
+        width: 0.1rem;
+        height: 98%;
+        background-color: $light-grayish-blue;
+    }
+
+    &__replies {
+        width: 52rem;
+        @include flex-container(column, flex-start, flex-end, 1.6rem);
+    }
+}
+
+.reply {
+    @include width-and-height(52rem, 14rem);
+}

@@ -1,0 +1,58 @@
+@import '../../sass/mixins';
+@import '../../sass/variables';
+
+.content {
+    width: 100%;
+    @include flex-container(column, flex-start, flex-start, 1.2rem);
+
+    &__header {
+        width: 100%;
+        @include flex-container(row, space-between, center);
+        line-height: 1.5;
+
+        .header__content {
+            @include flex-container(row, flex-start, center, 1.2rem);
+
+            img {
+                @include width-and-height(2.4rem, 2.4rem);
+            }
+
+            p {
+                color: $grayish-blue;
+            }
+
+            p:first-of-type {
+                color: $dark-blue;
+                font-weight: 500;
+            }
+
+            .header__you-box {
+                @include width-and-height(3.6rem, 2rem);
+                @include flex-container();
+                background-color: $moderate-blue;
+                border-radius: 0.3rem;
+                line-height: 1;
+
+                p:first-of-type {
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    &__text-container {
+        line-height: 1.5;
+
+        span {
+            color: $moderate-blue;
+            font-weight: 500;
+        }
+
+        p {
+            color: $grayish-blue;
+            font-weight: 400;
+        }
+    }
+}
