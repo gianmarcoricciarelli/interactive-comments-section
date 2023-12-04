@@ -1,11 +1,11 @@
 import { ChangeEvent, useContext, useState } from 'react';
-import { IUser } from '../../types/types';
+import { ICommentWithReplies, IUser } from '../../types/types';
 import style from './CommentAdder.module.scss';
 import { CallToActionsContext } from '../../contexts/CallToActionsContextProvider';
 
 interface ICommentAdder {
     currentUser: IUser;
-    replyingTo?: number;
+    replyingTo?: ICommentWithReplies;
 }
 
 export function CommentAdder({ currentUser, replyingTo }: ICommentAdder) {
@@ -20,7 +20,7 @@ export function CommentAdder({ currentUser, replyingTo }: ICommentAdder) {
         if (!replyingTo) {
             onAddComment!(comment);
         } else {
-            onReplyToComment!();
+            onReplyToComment!(replyingTo, comment, currentUser);
         }
         setComment('');
     };

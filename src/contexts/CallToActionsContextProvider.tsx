@@ -1,11 +1,11 @@
 import { Dispatch, ReactNode, SetStateAction, createContext } from 'react';
-import { CommentsData } from '../types/types';
+import { CommentsData, IComment, ICommentWithReplies, IUser } from '../types/types';
 
 interface ICallToActionsContext {
     commentsWithCommentAdder: number[];
     addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
     onAddComment: (newComment: string) => void;
-    onReplyToComment: () => void;
+    onReplyToComment: (replyingTo: ICommentWithReplies, comment: string, user: IUser) => void;
     onEditComment: (newComment: string) => void;
     onDeleteComment: (newComment: string) => void;
 }
@@ -44,7 +44,28 @@ export function CallToActionsContextProvider({
         }));
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
-    const onReplyToComment = () => {};
+    const onReplyToComment = (replyingTo: ICommentWithReplies, comment: string, user: IUser) => {
+        onUpdateData!((prevData) => {
+            let commentBeingReplied = prevData.comments.find((comment) => comment.id === replyingTo.id);
+            if (commentBeingReplied) {
+                const newComment: IComment = {
+                    id: nextCommentId,
+                    user,
+                    createdAt: 'Just now',
+                    content: comment,
+                    score: 0,
+                    replyingTo: replyingTo.user.username,
+                };
+                commentBeingReplied.replies = commentBeingReplied.replies?.length
+                    ? [...commentBeingReplied.replies, newComment]
+                    : [newComment];
+            } else {
+                const commentsWithReplies = prevData.comments.filter((comment) => !!comment.replies?.length);
+            }
+            return prevData;
+        });
+        onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
+    };
     const onEditComment = () => {};
     const onDeleteComment = () => {};
 
