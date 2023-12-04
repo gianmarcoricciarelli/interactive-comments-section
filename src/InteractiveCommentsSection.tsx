@@ -9,22 +9,28 @@ import { CallToActionsContextProvider } from './contexts/CallToActionsContextPro
 export function InteractiveCommentsSection() {
     const [data, setData] = useState<CommentsData>(dataJson);
     const [nextCommentId, setNextCommentId] = useState(5);
-    const [isCommentAdderHidden, setIsCommentAdderHidden] = useState(false);
+    const [commentsWithCommentAdder, setCommentsWithCommentAdder] = useState<number[]>([]);
 
     return (
         <CallToActionsContextProvider
+            commentsWithCommentAdder={commentsWithCommentAdder}
+            addCommentAdderToComment={setCommentsWithCommentAdder}
             onUpdateData={setData}
             onCurrentUserAddedComment={setNextCommentId}
-            onCurrentUserRepliesToComment={setIsCommentAdderHidden}
             nextCommentId={nextCommentId}
         >
             <div className={style['interactive-comment-section']}>
                 <div className={style['interactive-comment-section__comments-container']}>
                     {data.comments.map((comment) => (
-                        <Comment key={comment.id} comment={comment} currentUserName={data.currentUser.username} />
+                        <>
+                            <Comment key={comment.id} comment={comment} currentUser={data.currentUser} />
+                            {commentsWithCommentAdder.includes(comment.id) && (
+                                <CommentAdder currentUser={data.currentUser} replyingTo={comment.id} />
+                            )}
+                        </>
                     ))}
                 </div>
-                {!isCommentAdderHidden && <CommentAdder currentUser={data.currentUser} />}
+                <CommentAdder currentUser={data.currentUser} />
             </div>
         </CallToActionsContextProvider>
     );

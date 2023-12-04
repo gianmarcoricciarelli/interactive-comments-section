@@ -12,9 +12,12 @@ interface ICallToActions {
 }
 
 export function CallToActions({ isOwnComment, comment }: ICallToActions) {
-    const { onEditComment } = useContext(CallToActionsContext);
+    const { addCommentAdderToComment } = useContext(CallToActionsContext);
 
-    const onReplyClickHandler = () => {};
+    const onReplyClickHandler = () => {
+        addCommentAdderToComment!((prevCommentsWithCommentAdder) => [...prevCommentsWithCommentAdder, comment.id]);
+    };
+
     return (
         <div className={style['call-to-actions']}>
             {!isOwnComment ? (

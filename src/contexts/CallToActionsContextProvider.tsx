@@ -2,16 +2,20 @@ import { Dispatch, ReactNode, SetStateAction, createContext } from 'react';
 import { CommentsData } from '../types/types';
 
 interface ICallToActionsContext {
+    commentsWithCommentAdder: number[];
+    addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
     onAddComment: (newComment: string) => void;
+    onReplyToComment: () => void;
     onEditComment: (newComment: string) => void;
     onDeleteComment: (newComment: string) => void;
 }
 interface ICallToActionsContextProvider {
-    children: ReactNode;
+    commentsWithCommentAdder: number[];
+    addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
     onUpdateData: Dispatch<SetStateAction<CommentsData>>;
     onCurrentUserAddedComment: Dispatch<SetStateAction<number>>;
-    onCurrentUserRepliesToComment: Dispatch<SetStateAction<boolean>>;
     nextCommentId: number;
+    children: ReactNode;
 }
 
 export const CallToActionsContext = createContext<Partial<ICallToActionsContext>>({});
@@ -19,8 +23,9 @@ export const CallToActionsContext = createContext<Partial<ICallToActionsContext>
 export function CallToActionsContextProvider({
     onUpdateData,
     onCurrentUserAddedComment,
-    onCurrentUserRepliesToComment,
     nextCommentId,
+    commentsWithCommentAdder,
+    addCommentAdderToComment,
     children,
 }: ICallToActionsContextProvider) {
     const onAddComment = (newComment: string) => {
@@ -39,12 +44,22 @@ export function CallToActionsContextProvider({
         }));
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
-    const onEditComment = () => {
-        onCurrentUserRepliesToComment(false);
-    };
+    const onReplyToComment = () => {};
+    const onEditComment = () => {};
     const onDeleteComment = () => {};
 
     return (
-        <CallToActionsContext.Provider value={{ onAddComment, onEditComment, onDeleteComment }}>{children}</CallToActionsContext.Provider>
+        <CallToActionsContext.Provider
+            value={{
+                commentsWithCommentAdder,
+                addCommentAdderToComment,
+                onAddComment,
+                onReplyToComment,
+                onEditComment,
+                onDeleteComment,
+            }}
+        >
+            {children}
+        </CallToActionsContext.Provider>
     );
 }

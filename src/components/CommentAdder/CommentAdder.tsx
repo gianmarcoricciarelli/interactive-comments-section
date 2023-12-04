@@ -5,18 +5,23 @@ import { CallToActionsContext } from '../../contexts/CallToActionsContextProvide
 
 interface ICommentAdder {
     currentUser: IUser;
+    replyingTo?: number;
 }
 
-export function CommentAdder({ currentUser }: ICommentAdder) {
+export function CommentAdder({ currentUser, replyingTo }: ICommentAdder) {
     const [comment, setComment] = useState('');
 
-    const { onAddComment } = useContext(CallToActionsContext);
+    const { onAddComment, onReplyToComment } = useContext(CallToActionsContext);
 
     const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setComment(event.target.value);
     };
     const onClickHandler = () => {
-        onAddComment!(comment);
+        if (!replyingTo) {
+            onAddComment!(comment);
+        } else {
+            onReplyToComment!();
+        }
         setComment('');
     };
 
