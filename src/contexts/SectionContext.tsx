@@ -1,7 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction, createContext } from 'react';
 import { CommentsData, IComment, IUser } from '../types/types';
 
-interface ICallToActionsContext {
+interface ISectionContext {
     currentUser: IUser;
     commentsWithCommentAdder: number[];
     addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
@@ -10,7 +10,7 @@ interface ICallToActionsContext {
     onEditComment: (newComment: string) => void;
     onDeleteComment: (newComment: string) => void;
 }
-interface ICallToActionsContextProvider {
+interface ISectionContextProvider {
     currentUser: IUser;
     commentsWithCommentAdder: number[];
     addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
@@ -20,9 +20,9 @@ interface ICallToActionsContextProvider {
     children: ReactNode;
 }
 
-export const CallToActionsContext = createContext<Partial<ICallToActionsContext>>({});
+export const SectionContext = createContext<Partial<ISectionContext>>({});
 
-export function CallToActionsContextProvider({
+export function SectionContextProvider({
     currentUser,
     onUpdateData,
     onCurrentUserAddedComment,
@@ -30,7 +30,7 @@ export function CallToActionsContextProvider({
     commentsWithCommentAdder,
     addCommentAdderToComment,
     children,
-}: ICallToActionsContextProvider) {
+}: ISectionContextProvider) {
     const onAddComment = (newComment: string) => {
         onUpdateData((prevData) => ({
             ...prevData,
@@ -98,7 +98,7 @@ export function CallToActionsContextProvider({
     const onDeleteComment = () => {};
 
     return (
-        <CallToActionsContext.Provider
+        <SectionContext.Provider
             value={{
                 currentUser,
                 commentsWithCommentAdder,
@@ -110,6 +110,6 @@ export function CallToActionsContextProvider({
             }}
         >
             {children}
-        </CallToActionsContext.Provider>
+        </SectionContext.Provider>
     );
 }

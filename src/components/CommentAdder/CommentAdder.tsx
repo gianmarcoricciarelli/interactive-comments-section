@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { IComment, IUser } from '../../types/types';
 import style from './CommentAdder.module.scss';
-import { CallToActionsContext } from '../../contexts/CallToActionsContextProvider';
+import { SectionContext } from '../../contexts/SectionContext';
 
 interface ICommentAdder {
     currentUser: IUser;
@@ -12,7 +12,7 @@ interface ICommentAdder {
 export function CommentAdder({ currentUser, replyingTo, containerWidth = 580 }: ICommentAdder) {
     const [comment, setComment] = useState('');
 
-    const { onAddComment, onReplyToComment } = useContext(CallToActionsContext);
+    const { onAddComment, onReplyToComment } = useContext(SectionContext);
 
     const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setComment(event.target.value);

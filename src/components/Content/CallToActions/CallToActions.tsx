@@ -3,7 +3,7 @@ import iconEdit from '../../../assets/images/icon-edit.svg';
 import iconDelete from '../../../assets/images/icon-delete.svg';
 import style from './CallToActions.module.scss';
 import { useContext } from 'react';
-import { CallToActionsContext } from '../../../contexts/CallToActionsContextProvider';
+import { SectionContext } from '../../../contexts/SectionContext';
 import { IComment } from '../../../types/types';
 
 interface ICallToActions {
@@ -12,7 +12,7 @@ interface ICallToActions {
 }
 
 export function CallToActions({ isOwnComment, comment }: ICallToActions) {
-    const { addCommentAdderToComment } = useContext(CallToActionsContext);
+    const { addCommentAdderToComment } = useContext(SectionContext);
 
     const onReplyClickHandler = () => {
         addCommentAdderToComment!((prevCommentsWithCommentAdder) => [...prevCommentsWithCommentAdder, comment.id]);

@@ -2,7 +2,7 @@ import style from './InteractiveCommentsSection.module.scss';
 import dataJson from '../data.json';
 import { useState } from 'react';
 import { CommentsData } from './types/types';
-import { CallToActionsContextProvider } from './contexts/CallToActionsContextProvider';
+import { SectionContextProvider } from './contexts/SectionContext';
 import { CommentsRoot } from './components/CommentsRoot/CommentsRoot';
 import { CommentAdder } from './components/CommentAdder/CommentAdder';
 
@@ -12,7 +12,7 @@ export function InteractiveCommentsSection() {
     const [commentsWithCommentAdder, setCommentsWithCommentAdder] = useState<number[]>([]);
 
     return (
-        <CallToActionsContextProvider
+        <SectionContextProvider
             currentUser={data.currentUser}
             commentsWithCommentAdder={commentsWithCommentAdder}
             addCommentAdderToComment={setCommentsWithCommentAdder}
@@ -24,6 +24,6 @@ export function InteractiveCommentsSection() {
                 <CommentsRoot comments={data.comments} />
                 <CommentAdder currentUser={data.currentUser} />
             </div>
-        </CallToActionsContextProvider>
+        </SectionContextProvider>
     );
 }
