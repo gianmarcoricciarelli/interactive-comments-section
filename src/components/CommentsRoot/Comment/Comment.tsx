@@ -1,4 +1,4 @@
-import { IComment, IUser } from '../../types/types';
+import { IComment, IUser } from '../../../types/types';
 import { Content } from './Content/Content';
 import { ReactionCounter } from './ReactionCounter/ReactionCounter';
 import style from './Comment.module.scss';

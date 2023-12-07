@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { IComment } from '../../types/types';
-import { Comment } from '../Comment/Comment';
+import { Comment } from './Comment/Comment';
 import style from './CommentsRoot.module.scss';
 import { SectionContext } from '../../contexts/SectionContext';
 import { AddACommentForm } from '../AddCommentForm/AddCommentForm';

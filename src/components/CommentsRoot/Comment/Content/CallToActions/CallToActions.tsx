@@ -1,10 +1,10 @@
-import iconReply from '../../../../assets/images/icon-reply.svg';
-import iconEdit from '../../../../assets/images/icon-edit.svg';
-import iconDelete from '../../../../assets/images/icon-delete.svg';
+import iconReply from '../../../../../assets/images/icon-reply.svg';
+import iconEdit from '../../../../../assets/images/icon-edit.svg';
+import iconDelete from '../../../../../assets/images/icon-delete.svg';
 import style from './CallToActions.module.scss';
 import { useContext } from 'react';
-import { SectionContext } from '../../../../contexts/SectionContext';
-import { IComment } from '../../../../types/types';
+import { SectionContext } from '../../../../../contexts/SectionContext';
+import { IComment } from '../../../../../types/types';
 
 interface ICallToActions {
     isOwnComment: boolean;
