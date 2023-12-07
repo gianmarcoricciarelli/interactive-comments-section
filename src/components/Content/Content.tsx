@@ -30,7 +30,10 @@ export function Content({ currentUserName, comment }: IContent) {
             </div>
             <div className={style['content__text-container']}>
                 {commentsWithEditForm && commentsWithEditForm.includes(comment.id) ? (
-                    <EditCommentForm previousText={`${comment.replyingTo ? `@${comment.replyingTo} ` : ''}${comment.content}`} />
+                    <EditCommentForm
+                        commentId={comment.id}
+                        previousText={`${comment.replyingTo ? `@${comment.replyingTo} ` : ''}${comment.content}`}
+                    />
                 ) : (
                     <p>
                         <span>{comment.replyingTo ? `@${comment.replyingTo}` : ''}</span> {comment.content}

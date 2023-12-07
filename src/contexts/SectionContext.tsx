@@ -9,7 +9,7 @@ interface ISectionContext {
     addEditFormToComment: Dispatch<SetStateAction<number[]>>;
     onAddComment: (newComment: string) => void;
     onReplyToComment: (replyingTo: IComment, comment: string, user: IUser) => void;
-    onEditComment: (newComment: string) => void;
+    onEditComment: (commentId: number, newText: string) => void;
     onDeleteComment: (newComment: string) => void;
 }
 interface ISectionContextProvider {
@@ -37,6 +37,23 @@ export function SectionContextProvider({
     addEditFormToComment,
     children,
 }: ISectionContextProvider) {
+    const findCommentById = (searchedId: number, comment: IComment): IComment | undefined => {
+        if (comment.id === searchedId) {
+            return comment;
+        }
+        if (!comment.replies?.length) {
+            return;
+        }
+
+        for (const reply of comment?.replies) {
+            const foundComment = findCommentById(searchedId, reply);
+
+            if (foundComment) {
+                return foundComment;
+            }
+        }
+    };
+
     const onAddComment = (newComment: string) => {
         onUpdateData((prevData) => ({
             ...prevData,
@@ -53,30 +70,13 @@ export function SectionContextProvider({
         }));
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
-
-    const search = (replyId: number, comment: IComment): IComment | undefined => {
-        if (comment.id === replyId) {
-            return comment;
-        }
-        if (!comment.replies?.length) {
-            return;
-        }
-
-        for (const reply of comment?.replies) {
-            const commentBeingReplied = search(replyId, reply);
-
-            if (commentBeingReplied) {
-                return commentBeingReplied;
-            }
-        }
-    };
     const onReplyToComment = (replyingTo: IComment, comment: string, user: IUser) => {
         onUpdateData!((prevData) => {
             const clonedPrevData = structuredClone(prevData);
             let commentBeingReplied;
 
             for (const comment of clonedPrevData.comments) {
-                commentBeingReplied = search(replyingTo.id, comment);
+                commentBeingReplied = findCommentById(replyingTo.id, comment);
 
                 if (commentBeingReplied) {
                     break;
@@ -100,7 +100,25 @@ export function SectionContextProvider({
         addAddFormToComment((prevComments) => prevComments.filter((comment) => comment !== replyingTo.id));
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
-    const onEditComment = () => {};
+    const onEditComment = (commentId: number, newText: string): void => {
+        onUpdateData!((prevData) => {
+            const clonedPrevData = structuredClone(prevData);
+            let commentBeingEdited;
+
+            for (const comment of clonedPrevData.comments) {
+                commentBeingEdited = findCommentById(commentId, comment);
+
+                if (commentBeingEdited) {
+                    break;
+                }
+            }
+
+            commentBeingEdited!.content = newText;
+
+            return clonedPrevData;
+        });
+        addEditFormToComment((prevComments) => prevComments.filter((comment) => comment !== commentId));
+    };
     const onDeleteComment = () => {};
 
     return (
