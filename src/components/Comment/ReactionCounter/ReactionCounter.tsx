@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import plusIcon from '../../assets/images/icon-plus.svg';
-import minusIcon from '../../assets/images/icon-minus.svg';
+import plusIcon from '../../../assets/images/icon-plus.svg';
+import minusIcon from '../../../assets/images/icon-minus.svg';
 import style from './ReactionCounter.module.scss';
 
 interface IReactionCounter {

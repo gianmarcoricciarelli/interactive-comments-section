@@ -1,9 +1,9 @@
 import style from './Content.module.scss';
 import { CallToActions } from './CallToActions/CallToActions';
-import { IComment } from '../../types/types';
+import { IComment } from '../../../types/types';
 import { useContext } from 'react';
-import { SectionContext } from '../../contexts/SectionContext';
-import { EditCommentForm } from '../EditCommentForm/EditCommentForm';
+import { SectionContext } from '../../../contexts/SectionContext';
+import { EditCommentForm } from '../../EditCommentForm/EditCommentForm';
 
 interface IContent {
     currentUserName: string;
