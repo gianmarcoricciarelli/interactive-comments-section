@@ -6,11 +6,10 @@ import { CallToActionsContext } from '../../contexts/CallToActionsContextProvide
 interface ICommentAdder {
     currentUser: IUser;
     replyingTo?: ICommentWithReplies;
-    topLevelReply: boolean;
+    topLevelReply?: boolean;
 }
 
 export function CommentAdder({ currentUser, replyingTo, topLevelReply }: ICommentAdder) {
-    console.log('replyingTo:', replyingTo);
     const [comment, setComment] = useState('');
 
     const { onAddComment, onReplyToComment } = useContext(CallToActionsContext);

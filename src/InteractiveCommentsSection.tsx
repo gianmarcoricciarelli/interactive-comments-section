@@ -8,6 +8,7 @@ import { CallToActionsContextProvider } from './contexts/CallToActionsContextPro
 
 export function InteractiveCommentsSection() {
     const [data, setData] = useState<CommentsData>(dataJson);
+    console.log('data:', data);
     const [nextCommentId, setNextCommentId] = useState(5);
     const [commentsWithCommentAdder, setCommentsWithCommentAdder] = useState<number[]>([]);
 

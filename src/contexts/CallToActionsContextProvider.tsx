@@ -88,6 +88,7 @@ export function CallToActionsContextProvider({
 
             return clonedPrevData;
         });
+        addCommentAdderToComment((prevComments) => prevComments.filter((comment) => comment !== replyingTo.id));
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
     const onEditComment = () => {};
