@@ -3,8 +3,8 @@ import { CommentsData, IComment, IUser } from '../types/types';
 
 interface ISectionContext {
     currentUser: IUser;
-    commentsWithCommentAdder: number[];
-    addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
+    commentsWithAddForm: number[];
+    addAddFormToComment: Dispatch<SetStateAction<number[]>>;
     onAddComment: (newComment: string) => void;
     onReplyToComment: (replyingTo: IComment, comment: string, user: IUser) => void;
     onEditComment: (newComment: string) => void;
@@ -12,8 +12,8 @@ interface ISectionContext {
 }
 interface ISectionContextProvider {
     currentUser: IUser;
-    commentsWithCommentAdder: number[];
-    addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
+    commentsWithAddForm: number[];
+    addAddFormToComment: Dispatch<SetStateAction<number[]>>;
     onUpdateData: Dispatch<SetStateAction<CommentsData>>;
     onCurrentUserAddedComment: Dispatch<SetStateAction<number>>;
     nextCommentId: number;
@@ -27,8 +27,8 @@ export function SectionContextProvider({
     onUpdateData,
     onCurrentUserAddedComment,
     nextCommentId,
-    commentsWithCommentAdder,
-    addCommentAdderToComment,
+    commentsWithAddForm,
+    addAddFormToComment,
     children,
 }: ISectionContextProvider) {
     const onAddComment = (newComment: string) => {
@@ -91,7 +91,7 @@ export function SectionContextProvider({
 
             return clonedPrevData;
         });
-        addCommentAdderToComment((prevComments) => prevComments.filter((comment) => comment !== replyingTo.id));
+        addAddFormToComment((prevComments) => prevComments.filter((comment) => comment !== replyingTo.id));
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
     const onEditComment = () => {};
@@ -101,8 +101,8 @@ export function SectionContextProvider({
         <SectionContext.Provider
             value={{
                 currentUser,
-                commentsWithCommentAdder,
-                addCommentAdderToComment,
+                commentsWithAddForm,
+                addAddFormToComment,
                 onAddComment,
                 onReplyToComment,
                 onEditComment,

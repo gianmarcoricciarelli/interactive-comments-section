@@ -12,10 +12,13 @@ interface ICallToActions {
 }
 
 export function CallToActions({ isOwnComment, comment }: ICallToActions) {
-    const { addCommentAdderToComment } = useContext(SectionContext);
+    const { addAddFormToComment } = useContext(SectionContext);
 
     const onReplyClickHandler = () => {
-        addCommentAdderToComment!((prevCommentsWithCommentAdder) => [...prevCommentsWithCommentAdder, comment.id]);
+        addAddFormToComment!((prevCommentsWithAddForm) => [...prevCommentsWithAddForm, comment.id]);
+    };
+    const onEditClickHandler = () => {
+        console.log('hello');
     };
 
     return (
@@ -31,7 +34,7 @@ export function CallToActions({ isOwnComment, comment }: ICallToActions) {
                         <img src={iconDelete} />
                         <p>Delete</p>
                     </div>
-                    <div className={style['personal-ctas__cta']}>
+                    <div className={style['personal-ctas__cta']} onClick={onEditClickHandler}>
                         <img src={iconEdit} />
                         <p>Edit</p>
                     </div>

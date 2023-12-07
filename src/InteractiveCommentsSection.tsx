@@ -4,25 +4,25 @@ import { useState } from 'react';
 import { CommentsData } from './types/types';
 import { SectionContextProvider } from './contexts/SectionContext';
 import { CommentsRoot } from './components/CommentsRoot/CommentsRoot';
-import { CommentAdder } from './components/CommentAdder/CommentAdder';
+import { AddACommentForm } from './components/AddCommentForm/AddCommentForm';
 
 export function InteractiveCommentsSection() {
     const [data, setData] = useState<CommentsData>(dataJson);
     const [nextCommentId, setNextCommentId] = useState(5);
-    const [commentsWithCommentAdder, setCommentsWithCommentAdder] = useState<number[]>([]);
+    const [commentsWithAddForm, setCommentsWithAddForm] = useState<number[]>([]);
 
     return (
         <SectionContextProvider
             currentUser={data.currentUser}
-            commentsWithCommentAdder={commentsWithCommentAdder}
-            addCommentAdderToComment={setCommentsWithCommentAdder}
+            commentsWithAddForm={commentsWithAddForm}
+            addAddFormToComment={setCommentsWithAddForm}
             onUpdateData={setData}
             onCurrentUserAddedComment={setNextCommentId}
             nextCommentId={nextCommentId}
         >
             <div className={style['interactive-comment-section']}>
                 <CommentsRoot comments={data.comments} />
-                <CommentAdder currentUser={data.currentUser} />
+                <AddACommentForm currentUser={data.currentUser} />
             </div>
         </SectionContextProvider>
     );
