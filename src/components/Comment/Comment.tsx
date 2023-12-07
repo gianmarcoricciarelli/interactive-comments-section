@@ -9,35 +9,16 @@ import { CallToActionsContext } from '../../contexts/CallToActionsContextProvide
 export interface CommentInterface {
     currentUser: IUser;
     comment: IComment;
+    containerWidth: number;
 }
 
-export function Comment({ currentUser, comment }: CommentInterface) {
+export function Comment({ currentUser, comment, containerWidth }: CommentInterface) {
     const { commentsWithCommentAdder } = useContext(CallToActionsContext);
 
     return (
-        <>
-            <div className={style['comment']}>
-                <ReactionCounter score={comment.score} />
-                <Content currentUserName={currentUser.username} comment={comment} />
-            </div>
-            {!!comment.replies?.length && (
-                <div className={style['vertical-line-and-replies']}>
-                    <div className={style['vertical-line-and-replies__line']} />
-                    <div className={style['vertical-line-and-replies__replies']}>
-                        {comment.replies.map((reply) => (
-                            <>
-                                <div key={reply.id} className={`${style['comment']} ${style['reply']}`}>
-                                    <ReactionCounter score={reply.score} />
-                                    <Content currentUserName={currentUser.username} comment={reply} />
-                                </div>
-                                {commentsWithCommentAdder!.includes(reply.id) && (
-                                    <CommentAdder currentUser={currentUser} replyingTo={reply} />
-                                )}
-                            </>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </>
+        <div className={style['comment']} style={{ width: containerWidth }}>
+            <ReactionCounter score={comment.score} />
+            <Content currentUserName={currentUser.username} comment={comment} />
+        </div>
     );
 }

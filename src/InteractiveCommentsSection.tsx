@@ -1,19 +1,19 @@
-import { Comment } from './components/Comment/Comment';
 import style from './InteractiveCommentsSection.module.scss';
 import dataJson from '../data.json';
 import { useState } from 'react';
 import { CommentsData } from './types/types';
-import { CommentAdder } from './components/CommentAdder/CommentAdder';
 import { CallToActionsContextProvider } from './contexts/CallToActionsContextProvider';
+import { CommentsRoot } from './components/CommentsRoot/CommentsRoot';
+import { CommentAdder } from './components/CommentAdder/CommentAdder';
 
 export function InteractiveCommentsSection() {
     const [data, setData] = useState<CommentsData>(dataJson);
-    console.log('data:', data);
     const [nextCommentId, setNextCommentId] = useState(5);
     const [commentsWithCommentAdder, setCommentsWithCommentAdder] = useState<number[]>([]);
 
     return (
         <CallToActionsContextProvider
+            currentUser={data.currentUser}
             commentsWithCommentAdder={commentsWithCommentAdder}
             addCommentAdderToComment={setCommentsWithCommentAdder}
             onUpdateData={setData}
@@ -21,16 +21,7 @@ export function InteractiveCommentsSection() {
             nextCommentId={nextCommentId}
         >
             <div className={style['interactive-comment-section']}>
-                <div className={style['interactive-comment-section__comments-container']}>
-                    {data.comments.map((comment) => (
-                        <>
-                            <Comment key={comment.id} comment={comment} currentUser={data.currentUser} />
-                            {commentsWithCommentAdder.includes(comment.id) && (
-                                <CommentAdder currentUser={data.currentUser} replyingTo={comment} topLevelReply />
-                            )}
-                        </>
-                    ))}
-                </div>
+                <CommentsRoot comments={data.comments} />
                 <CommentAdder currentUser={data.currentUser} />
             </div>
         </CallToActionsContextProvider>

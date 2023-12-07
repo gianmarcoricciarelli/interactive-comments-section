@@ -1,15 +1,17 @@
 import { Dispatch, ReactNode, SetStateAction, createContext } from 'react';
-import { CommentsData, IComment, ICommentWithReplies, IUser } from '../types/types';
+import { CommentsData, IComment, IUser } from '../types/types';
 
 interface ICallToActionsContext {
+    currentUser: IUser;
     commentsWithCommentAdder: number[];
     addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
     onAddComment: (newComment: string) => void;
-    onReplyToComment: (replyingTo: ICommentWithReplies, comment: string, user: IUser) => void;
+    onReplyToComment: (replyingTo: IComment, comment: string, user: IUser) => void;
     onEditComment: (newComment: string) => void;
     onDeleteComment: (newComment: string) => void;
 }
 interface ICallToActionsContextProvider {
+    currentUser: IUser;
     commentsWithCommentAdder: number[];
     addCommentAdderToComment: Dispatch<SetStateAction<number[]>>;
     onUpdateData: Dispatch<SetStateAction<CommentsData>>;
@@ -21,6 +23,7 @@ interface ICallToActionsContextProvider {
 export const CallToActionsContext = createContext<Partial<ICallToActionsContext>>({});
 
 export function CallToActionsContextProvider({
+    currentUser,
     onUpdateData,
     onCurrentUserAddedComment,
     nextCommentId,
@@ -45,7 +48,7 @@ export function CallToActionsContextProvider({
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
 
-    const search = (replyId: number, comment: ICommentWithReplies): ICommentWithReplies | undefined => {
+    const search = (replyId: number, comment: IComment): IComment | undefined => {
         if (comment.id === replyId) {
             return comment;
         }
@@ -61,7 +64,7 @@ export function CallToActionsContextProvider({
             }
         }
     };
-    const onReplyToComment = (replyingTo: ICommentWithReplies, comment: string, user: IUser) => {
+    const onReplyToComment = (replyingTo: IComment, comment: string, user: IUser) => {
         onUpdateData!((prevData) => {
             const clonedPrevData = structuredClone(prevData);
             let commentBeingReplied;
@@ -97,6 +100,7 @@ export function CallToActionsContextProvider({
     return (
         <CallToActionsContext.Provider
             value={{
+                currentUser,
                 commentsWithCommentAdder,
                 addCommentAdderToComment,
                 onAddComment,

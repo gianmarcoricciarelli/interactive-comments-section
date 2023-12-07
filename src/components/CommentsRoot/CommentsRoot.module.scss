@@ -1,0 +1,20 @@
+@import '../../sass/variables';
+@import '../../sass//mixins';
+
+.comments-root {
+    @include flex-container(column, center, center, 1.6rem);
+
+    &__replies-container {
+        @include flex-container(row, flex-end, flex-start, 2.6rem);
+
+        .replies-container__line {
+            width: 0.1rem;
+            height: 98%;
+            background-color: $light-grayish-blue;
+        }
+
+        .replies-container__replies {
+            @include flex-container(column, flex-start, flex-end, 1.6rem);
+        }
+    }
+}

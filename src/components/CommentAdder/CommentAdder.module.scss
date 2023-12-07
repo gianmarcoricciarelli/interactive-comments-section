@@ -41,8 +41,4 @@
             cursor: pointer;
         }
     }
-
-    &__reply {
-        @include width-and-height(52rem, 14rem);
-    }
 }
