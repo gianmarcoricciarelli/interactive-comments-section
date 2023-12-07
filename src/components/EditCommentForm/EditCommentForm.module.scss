@@ -1,0 +1,36 @@
+@import '../../sass/mixins';
+@import '../../sass/variables';
+
+.edit-comment-form {
+    @include flex-container(row, center, flex-start, 1.2rem);
+
+    textarea {
+        flex-grow: 1;
+        height: 100%;
+        padding: 1.6rem;
+        resize: none;
+        font-family: 'Rubik', sans-serif;
+        font-size: 1.4rem;
+        border-radius: 0.5rem;
+        border: 1px solid $light-gray;
+        color: $grayish-blue;
+
+        &:focus {
+            outline: none !important;
+            border-color: $grayish-blue;
+        }
+    }
+
+    button {
+        width: 8rem;
+        height: 3.2rem;
+        border: unset;
+        background-color: $moderate-blue;
+        color: $white;
+        border-radius: 0.5rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

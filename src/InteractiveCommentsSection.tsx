@@ -10,12 +10,15 @@ export function InteractiveCommentsSection() {
     const [data, setData] = useState<CommentsData>(dataJson);
     const [nextCommentId, setNextCommentId] = useState(5);
     const [commentsWithAddForm, setCommentsWithAddForm] = useState<number[]>([]);
+    const [commentsWithEditForm, setCommentsWithEditForm] = useState<number[]>([]);
 
     return (
         <SectionContextProvider
             currentUser={data.currentUser}
             commentsWithAddForm={commentsWithAddForm}
             addAddFormToComment={setCommentsWithAddForm}
+            commentsWithEditForm={commentsWithEditForm}
+            addEditFormToComment={setCommentsWithEditForm}
             onUpdateData={setData}
             onCurrentUserAddedComment={setNextCommentId}
             nextCommentId={nextCommentId}

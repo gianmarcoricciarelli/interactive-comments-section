@@ -5,6 +5,8 @@ interface ISectionContext {
     currentUser: IUser;
     commentsWithAddForm: number[];
     addAddFormToComment: Dispatch<SetStateAction<number[]>>;
+    commentsWithEditForm: number[];
+    addEditFormToComment: Dispatch<SetStateAction<number[]>>;
     onAddComment: (newComment: string) => void;
     onReplyToComment: (replyingTo: IComment, comment: string, user: IUser) => void;
     onEditComment: (newComment: string) => void;
@@ -14,6 +16,8 @@ interface ISectionContextProvider {
     currentUser: IUser;
     commentsWithAddForm: number[];
     addAddFormToComment: Dispatch<SetStateAction<number[]>>;
+    commentsWithEditForm: number[];
+    addEditFormToComment: Dispatch<SetStateAction<number[]>>;
     onUpdateData: Dispatch<SetStateAction<CommentsData>>;
     onCurrentUserAddedComment: Dispatch<SetStateAction<number>>;
     nextCommentId: number;
@@ -29,6 +33,8 @@ export function SectionContextProvider({
     nextCommentId,
     commentsWithAddForm,
     addAddFormToComment,
+    commentsWithEditForm,
+    addEditFormToComment,
     children,
 }: ISectionContextProvider) {
     const onAddComment = (newComment: string) => {
@@ -103,6 +109,8 @@ export function SectionContextProvider({
                 currentUser,
                 commentsWithAddForm,
                 addAddFormToComment,
+                commentsWithEditForm,
+                addEditFormToComment,
                 onAddComment,
                 onReplyToComment,
                 onEditComment,

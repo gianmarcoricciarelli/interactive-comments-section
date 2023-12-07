@@ -12,13 +12,13 @@ interface ICallToActions {
 }
 
 export function CallToActions({ isOwnComment, comment }: ICallToActions) {
-    const { addAddFormToComment } = useContext(SectionContext);
+    const { addAddFormToComment, addEditFormToComment } = useContext(SectionContext);
 
     const onReplyClickHandler = () => {
         addAddFormToComment!((prevCommentsWithAddForm) => [...prevCommentsWithAddForm, comment.id]);
     };
     const onEditClickHandler = () => {
-        console.log('hello');
+        addEditFormToComment!((prevCommentsWithEditForm) => [...prevCommentsWithEditForm, comment.id]);
     };
 
     return (

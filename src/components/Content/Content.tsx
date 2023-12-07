@@ -1,6 +1,9 @@
 import style from './Content.module.scss';
 import { CallToActions } from './CallToActions/CallToActions';
 import { IComment } from '../../types/types';
+import { useContext } from 'react';
+import { SectionContext } from '../../contexts/SectionContext';
+import { EditCommentForm } from '../EditCommentForm/EditCommentForm';
 
 interface IContent {
     currentUserName: string;
@@ -8,6 +11,8 @@ interface IContent {
 }
 
 export function Content({ currentUserName, comment }: IContent) {
+    const { commentsWithEditForm } = useContext(SectionContext);
+
     return (
         <div className={style['content']}>
             <div className={style['content__header']}>
@@ -24,9 +29,13 @@ export function Content({ currentUserName, comment }: IContent) {
                 <CallToActions isOwnComment={currentUserName === comment.user.username} comment={comment} />
             </div>
             <div className={style['content__text-container']}>
-                <p>
-                    <span>{comment.replyingTo ? `@${comment.replyingTo}` : ''}</span> {comment.content}
-                </p>
+                {commentsWithEditForm && commentsWithEditForm.includes(comment.id) ? (
+                    <EditCommentForm previousText={`${comment.replyingTo ? `@${comment.replyingTo} ` : ''}${comment.content}`} />
+                ) : (
+                    <p>
+                        <span>{comment.replyingTo ? `@${comment.replyingTo}` : ''}</span> {comment.content}
+                    </p>
+                )}
             </div>
         </div>
     );
