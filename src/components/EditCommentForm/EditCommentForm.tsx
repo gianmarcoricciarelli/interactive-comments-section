@@ -16,7 +16,7 @@ export function EditCommentForm({ commentId, previousText }: IEditCommentForm) {
         setEditedComment(event.target.value);
     };
     const onClickHandler = () => {
-        onEditComment(commentId, editedComment);
+        onEditComment!(commentId, editedComment);
     };
 
     return (
