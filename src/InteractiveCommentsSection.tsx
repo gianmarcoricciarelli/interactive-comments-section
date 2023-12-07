@@ -25,7 +25,7 @@ export function InteractiveCommentsSection() {
                         <>
                             <Comment key={comment.id} comment={comment} currentUser={data.currentUser} />
                             {commentsWithCommentAdder.includes(comment.id) && (
-                                <CommentAdder currentUser={data.currentUser} replyingTo={comment} />
+                                <CommentAdder currentUser={data.currentUser} replyingTo={comment} topLevelReply />
                             )}
                         </>
                     ))}

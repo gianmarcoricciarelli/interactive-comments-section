@@ -44,25 +44,49 @@ export function CallToActionsContextProvider({
         }));
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };
+
+    const search = (replyId: number, comment: ICommentWithReplies): ICommentWithReplies | undefined => {
+        if (comment.id === replyId) {
+            return comment;
+        }
+        if (!comment.replies?.length) {
+            return;
+        }
+
+        for (const reply of comment?.replies) {
+            const commentBeingReplied = search(replyId, reply);
+
+            if (commentBeingReplied) {
+                return commentBeingReplied;
+            }
+        }
+    };
     const onReplyToComment = (replyingTo: ICommentWithReplies, comment: string, user: IUser) => {
         onUpdateData!((prevData) => {
-            let commentBeingReplied = prevData.comments.find((comment) => comment.id === replyingTo.id);
-            if (commentBeingReplied) {
-                const newComment: IComment = {
-                    id: nextCommentId,
-                    user,
-                    createdAt: 'Just now',
-                    content: comment,
-                    score: 0,
-                    replyingTo: replyingTo.user.username,
-                };
-                commentBeingReplied.replies = commentBeingReplied.replies?.length
-                    ? [...commentBeingReplied.replies, newComment]
-                    : [newComment];
-            } else {
-                const commentsWithReplies = prevData.comments.filter((comment) => !!comment.replies?.length);
+            const clonedPrevData = structuredClone(prevData);
+            let commentBeingReplied;
+
+            for (const comment of clonedPrevData.comments) {
+                commentBeingReplied = search(replyingTo.id, comment);
+
+                if (commentBeingReplied) {
+                    break;
+                }
             }
-            return prevData;
+
+            const newComment: IComment = {
+                id: nextCommentId,
+                user,
+                createdAt: 'Just now',
+                content: comment,
+                score: 0,
+                replyingTo: replyingTo.user.username,
+            };
+            commentBeingReplied!.replies = commentBeingReplied!.replies?.length
+                ? [...commentBeingReplied!.replies, newComment]
+                : [newComment];
+
+            return clonedPrevData;
         });
         onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
     };

@@ -6,9 +6,11 @@ import { CallToActionsContext } from '../../contexts/CallToActionsContextProvide
 interface ICommentAdder {
     currentUser: IUser;
     replyingTo?: ICommentWithReplies;
+    topLevelReply: boolean;
 }
 
-export function CommentAdder({ currentUser, replyingTo }: ICommentAdder) {
+export function CommentAdder({ currentUser, replyingTo, topLevelReply }: ICommentAdder) {
+    console.log('replyingTo:', replyingTo);
     const [comment, setComment] = useState('');
 
     const { onAddComment, onReplyToComment } = useContext(CallToActionsContext);
@@ -26,7 +28,7 @@ export function CommentAdder({ currentUser, replyingTo }: ICommentAdder) {
     };
 
     return (
-        <div className={style['comment-adder']}>
+        <div className={`${style['comment-adder']} ${replyingTo && !topLevelReply ? style['comment-adder__reply'] : ''}`}>
             <img src={`/src/assets/images/avatars/image-${currentUser.username}.png`} />
             <textarea placeholder="Add a comment..." value={comment} onChange={onChangeHandler} />
             <button onClick={onClickHandler}>SEND</button>

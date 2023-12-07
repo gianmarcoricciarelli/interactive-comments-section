@@ -25,11 +25,15 @@ export function Comment({ currentUser, comment }: CommentInterface) {
                     <div className={style['vertical-line-and-replies__line']} />
                     <div className={style['vertical-line-and-replies__replies']}>
                         {comment.replies.map((reply) => (
-                            <div key={reply.id} className={`${style['comment']} ${style['reply']}`}>
-                                <ReactionCounter score={reply.score} />
-                                <Content currentUserName={currentUser.username} comment={reply} />
-                                {commentsWithCommentAdder!.includes(reply.id) && <CommentAdder currentUser={currentUser} />}
-                            </div>
+                            <>
+                                <div key={reply.id} className={`${style['comment']} ${style['reply']}`}>
+                                    <ReactionCounter score={reply.score} />
+                                    <Content currentUserName={currentUser.username} comment={reply} />
+                                </div>
+                                {commentsWithCommentAdder!.includes(reply.id) && (
+                                    <CommentAdder currentUser={currentUser} replyingTo={reply} />
+                                )}
+                            </>
                         ))}
                     </div>
                 </div>
