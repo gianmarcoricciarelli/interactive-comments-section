@@ -13,13 +13,10 @@ export interface IComment {
     createdAt: string;
     score: number;
     replyingTo?: string;
-}
-
-export interface ICommentWithReplies extends IComment {
     replies?: IComment[];
 }
 
 export interface CommentsData {
     currentUser: IUser;
-    comments: ICommentWithReplies[];
+    comments: IComment[];
 }

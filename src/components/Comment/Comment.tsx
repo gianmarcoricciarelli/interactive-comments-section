@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ICommentWithReplies, IUser } from '../../types/types';
+import { IComment, IUser } from '../../types/types';
 import { Content } from '../Content/Content';
 import { ReactionCounter } from '../ReactionCounter/ReactionCounter';
 import style from './Comment.module.scss';
@@ -8,7 +8,7 @@ import { CallToActionsContext } from '../../contexts/CallToActionsContextProvide
 
 export interface CommentInterface {
     currentUser: IUser;
-    comment: ICommentWithReplies;
+    comment: IComment;
 }
 
 export function Comment({ currentUser, comment }: CommentInterface) {

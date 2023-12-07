@@ -1,11 +1,11 @@
 import { ChangeEvent, useContext, useState } from 'react';
-import { ICommentWithReplies, IUser } from '../../types/types';
+import { IComment, IUser } from '../../types/types';
 import style from './CommentAdder.module.scss';
 import { CallToActionsContext } from '../../contexts/CallToActionsContextProvider';
 
 interface ICommentAdder {
     currentUser: IUser;
-    replyingTo?: ICommentWithReplies;
+    replyingTo?: IComment;
     topLevelReply?: boolean;
 }
 

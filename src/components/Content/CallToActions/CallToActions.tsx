@@ -4,11 +4,11 @@ import iconDelete from '../../../assets/images/icon-delete.svg';
 import style from './CallToActions.module.scss';
 import { useContext } from 'react';
 import { CallToActionsContext } from '../../../contexts/CallToActionsContextProvider';
-import { ICommentWithReplies } from '../../../types/types';
+import { IComment } from '../../../types/types';
 
 interface ICallToActions {
     isOwnComment: boolean;
-    comment: ICommentWithReplies;
+    comment: IComment;
 }
 
 export function CallToActions({ isOwnComment, comment }: ICallToActions) {

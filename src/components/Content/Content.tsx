@@ -1,10 +1,10 @@
 import style from './Content.module.scss';
 import { CallToActions } from './CallToActions/CallToActions';
-import { ICommentWithReplies } from '../../types/types';
+import { IComment } from '../../types/types';
 
 interface IContent {
     currentUserName: string;
-    comment: ICommentWithReplies;
+    comment: IComment;
 }
 
 export function Content({ currentUserName, comment }: IContent) {
