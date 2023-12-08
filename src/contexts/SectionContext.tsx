@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, createContext } from 'react';
+import { Dispatch, ReactNode, SetStateAction, createContext, useState } from 'react';
 import { CommentsData, IComment, IUser } from '../types/types';
 
 interface ISectionContext {
@@ -11,6 +11,10 @@ interface ISectionContext {
     onReplyToComment: (replyingTo: IComment, comment: string, user: IUser) => void;
     onEditComment: (commentId: number, newText: string) => void;
     onDeleteComment: (commentId: number) => void;
+    modalIsOpen: boolean;
+    setModalIsOpen: Dispatch<SetStateAction<boolean>>;
+    commentToDelete: number;
+    setCommentToDelete: Dispatch<SetStateAction<number>>;
 }
 interface ISectionContextProvider {
     currentUser: IUser;
@@ -37,6 +41,9 @@ export function SectionContextProvider({
     addEditFormToComment,
     children,
 }: ISectionContextProvider) {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [commentToDelete, setCommentToDelete] = useState(0);
+
     const findCommentById = (searchedId: number, comment: IComment): IComment | undefined => {
         if (comment.id === searchedId) {
             return comment;
@@ -155,6 +162,10 @@ export function SectionContextProvider({
                 onReplyToComment,
                 onEditComment,
                 onDeleteComment,
+                modalIsOpen,
+                setModalIsOpen,
+                commentToDelete,
+                setCommentToDelete,
             }}
         >
             {children}

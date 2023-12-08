@@ -12,7 +12,7 @@ interface ICallToActions {
 }
 
 export function CallToActions({ isOwnComment, comment }: ICallToActions) {
-    const { addAddFormToComment, addEditFormToComment, onDeleteComment } = useContext(SectionContext);
+    const { addAddFormToComment, addEditFormToComment, setModalIsOpen, setCommentToDelete } = useContext(SectionContext);
 
     const onReplyClickHandler = () => {
         addAddFormToComment!((prevCommentsWithAddForm) => [...prevCommentsWithAddForm, comment.id]);
@@ -21,7 +21,8 @@ export function CallToActions({ isOwnComment, comment }: ICallToActions) {
         addEditFormToComment!((prevCommentsWithEditForm) => [...prevCommentsWithEditForm, comment.id]);
     };
     const onDeleteClickHandler = () => {
-        onDeleteComment!(comment.id);
+        setModalIsOpen!(true);
+        setCommentToDelete!(comment.id);
     };
 
     return (

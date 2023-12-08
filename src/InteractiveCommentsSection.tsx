@@ -5,6 +5,7 @@ import { CommentsData } from './types/types';
 import { SectionContextProvider } from './contexts/SectionContext';
 import { CommentsRoot } from './components/CommentsRoot/CommentsRoot';
 import { AddACommentForm } from './components/AddCommentForm/AddCommentForm';
+import { ConfirmDeleteModal } from './components/ConfirmDeleteModal/ConfirmDeleteModal';
 
 export function InteractiveCommentsSection() {
     const [data, setData] = useState<CommentsData>(dataJson);
@@ -23,10 +24,13 @@ export function InteractiveCommentsSection() {
             onCurrentUserAddedComment={setNextCommentId}
             nextCommentId={nextCommentId}
         >
-            <div className={style['interactive-comment-section']}>
-                <CommentsRoot comments={data.comments} />
-                <AddACommentForm currentUser={data.currentUser} />
-            </div>
+            <>
+                <div className={style['interactive-comment-section']}>
+                    <CommentsRoot comments={data.comments} />
+                    <AddACommentForm currentUser={data.currentUser} />
+                </div>
+                <ConfirmDeleteModal />
+            </>
         </SectionContextProvider>
     );
 }

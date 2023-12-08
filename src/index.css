@@ -17,4 +17,5 @@ body {
     height: 100dvh;
     font-size: 1.4rem;
     font-weight: 400;
+    position: relative;
 }
