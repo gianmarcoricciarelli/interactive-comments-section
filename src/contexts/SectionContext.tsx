@@ -10,7 +10,7 @@ interface ISectionContext {
     onAddComment: (newComment: string) => void;
     onReplyToComment: (replyingTo: IComment, comment: string, user: IUser) => void;
     onEditComment: (commentId: number, newText: string) => void;
-    onDeleteComment: (newComment: string) => void;
+    onDeleteComment: (commentId: number) => void;
 }
 interface ISectionContextProvider {
     currentUser: IUser;
@@ -119,7 +119,29 @@ export function SectionContextProvider({
         });
         addEditFormToComment((prevComments) => prevComments.filter((comment) => comment !== commentId));
     };
-    const onDeleteComment = () => {};
+    function searchAndFilterDeletedComment(idToFilter: number, comments: IComment[]): IComment[] {
+        if (comments.map((comment) => comment.id).includes(idToFilter)) {
+            return comments.filter((comment) => comment.id !== idToFilter);
+        }
+
+        const commentsWithReplies = comments.filter((comment) => !!comment.replies?.length);
+
+        for (const comment of commentsWithReplies) {
+            comment.replies = searchAndFilterDeletedComment(idToFilter, comment.replies!);
+        }
+
+        return comments;
+    }
+    const onDeleteComment = (commentId: number) => {
+        onUpdateData!((prevData) => {
+            const filteredComments = searchAndFilterDeletedComment(commentId, prevData.comments);
+
+            return {
+                currentUser: prevData.currentUser,
+                comments: filteredComments,
+            };
+        });
+    };
 
     return (
         <SectionContext.Provider
