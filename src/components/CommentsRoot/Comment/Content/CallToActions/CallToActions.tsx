@@ -27,7 +27,7 @@ export function CallToActions({ isOwnComment, comment }: ICallToActions) {
     return (
         <div className={style['call-to-actions']}>
             {!isOwnComment ? (
-                <div className={style['call-to-actions__edit-cta']} onClick={onReplyClickHandler}>
+                <div className={style['call-to-actions__reply-cta']} onClick={onReplyClickHandler}>
                     <img src={iconReply} />
                     <p>Reply</p>
                 </div>

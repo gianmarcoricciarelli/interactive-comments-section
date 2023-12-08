@@ -29,6 +29,7 @@
         background-color: $moderate-blue;
         color: $white;
         border-radius: 0.5rem;
+        transition: all 300ms;
 
         &:not(:disabled) {
             &:hover {
