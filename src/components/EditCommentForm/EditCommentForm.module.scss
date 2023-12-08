@@ -14,6 +14,7 @@
         border-radius: 0.5rem;
         border: 1px solid $light-gray;
         color: $grayish-blue;
+        transition: all 300ms;
 
         &:focus {
             outline: none !important;
@@ -29,8 +30,15 @@
         color: $white;
         border-radius: 0.5rem;
 
-        &:hover {
-            cursor: pointer;
+        &:not(:disabled) {
+            &:hover {
+                filter: opacity(0.85);
+                cursor: pointer;
+            }
+        }
+
+        &:disabled {
+            filter: opacity(0.5);
         }
     }
 }

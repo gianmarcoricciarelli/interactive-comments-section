@@ -22,7 +22,9 @@ export function EditCommentForm({ commentId, previousText }: IEditCommentForm) {
     return (
         <div className={style['edit-comment-form']}>
             <textarea value={editedComment} onChange={onChangeHandler} />
-            <button onClick={onClickHandler}>UPDATE</button>
+            <button disabled={editedComment === previousText || editedComment.length === 0} onClick={onClickHandler}>
+                UPDATE
+            </button>
         </div>
     );
 }

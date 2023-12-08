@@ -27,10 +27,12 @@ export function AddACommentForm({ currentUser, replyingTo, containerWidth = 580 
     };
 
     return (
-        <div className={`${style['comment-adder']}`} style={{ width: containerWidth }}>
+        <div className={`${style['add-comment-form']}`} style={{ width: containerWidth }}>
             <img src={`/src/assets/images/avatars/image-${currentUser.username}.png`} />
             <textarea placeholder="Add a comment..." value={comment} onChange={onChangeHandler} />
-            <button onClick={onClickHandler}>SEND</button>
+            <button disabled={comment.length === 0} onClick={onClickHandler}>
+                SEND
+            </button>
         </div>
     );
 }
