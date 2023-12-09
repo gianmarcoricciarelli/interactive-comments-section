@@ -49,7 +49,7 @@ export function SectionContextProvider({ children }: ISectionContextProps): Reac
         if (comment.id === searchedId) {
             return comment;
         }
-        if (comment.replies?.length === undefined) {
+        if (comment.replies?.length === undefined || comment.replies?.length === 0) {
             return;
         }
 

@@ -5,7 +5,6 @@ import { Comment } from "./Comment/Comment";
 import { SectionContext } from "../../contexts/SectionContext";
 import { AddACommentForm } from "../AddCommentForm/AddCommentForm";
 import style from "./CommentsRoot.module.scss";
-import dataJson from "../../../data.json";
 
 interface ICommentsRoot {
     comments?: IComment[];
@@ -13,14 +12,16 @@ interface ICommentsRoot {
 }
 
 export function CommentsRoot({
-    comments = dataJson.comments,
+    comments,
     repliesContainerWidth = 580,
 }: ICommentsRoot): React.JSX.Element {
-    const { commentsWithAddForm } = useContext(SectionContext);
+    const { commentsWithAddForm, comments: commentsFromData } = useContext(SectionContext);
+
+    const commentsRootComments = comments ?? commentsFromData;
 
     return (
         <div className={style["comments-root"]} style={{ width: repliesContainerWidth }}>
-            {comments.map((comment) => (
+            {commentsRootComments.map((comment) => (
                 <>
                     <Comment
                         key={comment.id}
