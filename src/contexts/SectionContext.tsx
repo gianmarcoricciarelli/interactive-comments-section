@@ -1,68 +1,69 @@
-import { Dispatch, ReactNode, SetStateAction, createContext, useState } from 'react';
-import { CommentsData, IComment, IUser } from '../types/types';
+import type { CommentsData, IComment, IUser } from "../types/types";
+import type { Dispatch, SetStateAction, ReactNode } from "react";
+import React, { createContext, useState } from "react";
+import dataJson from "../../data.json";
 
-interface ISectionContext {
+interface ISectionContextDefault {
     currentUser: IUser;
+    comments: IComment[];
     commentsWithAddForm: number[];
-    addAddFormToComment: Dispatch<SetStateAction<number[]>>;
     commentsWithEditForm: number[];
-    addEditFormToComment: Dispatch<SetStateAction<number[]>>;
-    onAddComment: (newComment: string) => void;
-    onReplyToComment: (replyingTo: IComment, comment: string, user: IUser) => void;
-    onEditComment: (commentId: number, newText: string) => void;
-    onDeleteComment: (commentId: number) => void;
     modalIsOpen: boolean;
-    setModalIsOpen: Dispatch<SetStateAction<boolean>>;
     commentToDelete: number;
-    setCommentToDelete: Dispatch<SetStateAction<number>>;
 }
-interface ISectionContextProvider {
-    currentUser: IUser;
-    commentsWithAddForm: number[];
-    addAddFormToComment: Dispatch<SetStateAction<number[]>>;
-    commentsWithEditForm: number[];
-    addEditFormToComment: Dispatch<SetStateAction<number[]>>;
-    onUpdateData: Dispatch<SetStateAction<CommentsData>>;
-    onCurrentUserAddedComment: Dispatch<SetStateAction<number>>;
-    nextCommentId: number;
+
+interface ISectionContextCallbacks {
+    setCommentsWithAddForm?: Dispatch<SetStateAction<number[]>>;
+    setCommentsWithEditForm?: Dispatch<SetStateAction<number[]>>;
+    onAddComment?: (newComment: string) => void;
+    onReplyToComment?: (replyingTo: IComment, comment: string, user: IUser) => void;
+    onEditComment?: (commentId: number, newText: string) => void;
+    onDeleteComment?: (commentId: number) => void;
+    setModalIsOpen?: Dispatch<SetStateAction<boolean>>;
+    setCommentToDelete?: Dispatch<SetStateAction<number>>;
+}
+interface ISectionContextProps {
     children: ReactNode;
 }
 
-export const SectionContext = createContext<Partial<ISectionContext>>({});
+export const SectionContext = createContext<ISectionContextDefault & ISectionContextCallbacks>({
+    currentUser: dataJson.currentUser,
+    comments: dataJson.comments,
+    commentsWithAddForm: [],
+    commentsWithEditForm: [],
+    modalIsOpen: false,
+    commentToDelete: 0,
+});
 
-export function SectionContextProvider({
-    currentUser,
-    onUpdateData,
-    onCurrentUserAddedComment,
-    nextCommentId,
-    commentsWithAddForm,
-    addAddFormToComment,
-    commentsWithEditForm,
-    addEditFormToComment,
-    children,
-}: ISectionContextProvider) {
+export function SectionContextProvider({ children }: ISectionContextProps): React.JSX.Element {
+    const [data, setData] = useState<CommentsData>(dataJson);
+    const [nextCommentId, setNextCommentId] = useState(5);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [commentToDelete, setCommentToDelete] = useState(0);
+    const [commentsWithAddForm, setCommentsWithAddForm] = useState<number[]>([]);
+    const [commentsWithEditForm, setCommentsWithEditForm] = useState<number[]>([]);
+
+    const currentUser = data.currentUser;
 
     const findCommentById = (searchedId: number, comment: IComment): IComment | undefined => {
         if (comment.id === searchedId) {
             return comment;
         }
-        if (!comment.replies?.length) {
+        if (comment.replies?.length === undefined) {
             return;
         }
 
         for (const reply of comment?.replies) {
             const foundComment = findCommentById(searchedId, reply);
 
-            if (foundComment) {
+            if (foundComment !== undefined) {
                 return foundComment;
             }
         }
     };
 
-    const onAddComment = (newComment: string) => {
-        onUpdateData((prevData) => ({
+    const onAddComment = (newComment: string): void => {
+        setData((prevData) => ({
             ...prevData,
             comments: [
                 ...prevData.comments,
@@ -70,22 +71,22 @@ export function SectionContextProvider({
                     id: nextCommentId,
                     user: prevData.currentUser,
                     content: newComment,
-                    createdAt: 'Just now',
+                    createdAt: "Just now",
                     score: 0,
                 },
             ],
         }));
-        onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
+        setNextCommentId((prevNextCommentId) => prevNextCommentId + 1);
     };
-    const onReplyToComment = (replyingTo: IComment, comment: string, user: IUser) => {
-        onUpdateData!((prevData) => {
+    const onReplyToComment = (replyingTo: IComment, comment: string, user: IUser): void => {
+        setData((prevData) => {
             const clonedPrevData = structuredClone(prevData);
-            let commentBeingReplied;
+            let commentBeingReplied: IComment | undefined;
 
             for (const comment of clonedPrevData.comments) {
                 commentBeingReplied = findCommentById(replyingTo.id, comment);
 
-                if (commentBeingReplied) {
+                if (commentBeingReplied !== undefined) {
                     break;
                 }
             }
@@ -93,29 +94,33 @@ export function SectionContextProvider({
             const newComment: IComment = {
                 id: nextCommentId,
                 user,
-                createdAt: 'Just now',
+                createdAt: "Just now",
                 content: comment,
                 score: 0,
                 replyingTo: replyingTo.user.username,
             };
-            commentBeingReplied!.replies = commentBeingReplied!.replies?.length
-                ? [...commentBeingReplied!.replies, newComment]
-                : [newComment];
+
+            commentBeingReplied!.replies =
+                commentBeingReplied!.replies?.length !== 0
+                    ? [...(commentBeingReplied!.replies ?? []), newComment]
+                    : [newComment];
 
             return clonedPrevData;
         });
-        addAddFormToComment((prevComments) => prevComments.filter((comment) => comment !== replyingTo.id));
-        onCurrentUserAddedComment((prevNextCommentId) => prevNextCommentId + 1);
+        setCommentsWithAddForm((prevComments) =>
+            prevComments.filter((comment) => comment !== replyingTo.id),
+        );
+        setNextCommentId((prevNextCommentId) => prevNextCommentId + 1);
     };
     const onEditComment = (commentId: number, newText: string): void => {
-        onUpdateData!((prevData) => {
+        setData((prevData) => {
             const clonedPrevData = structuredClone(prevData);
-            let commentBeingEdited;
+            let commentBeingEdited: IComment | undefined;
 
             for (const comment of clonedPrevData.comments) {
                 commentBeingEdited = findCommentById(commentId, comment);
 
-                if (commentBeingEdited) {
+                if (commentBeingEdited !== undefined) {
                     break;
                 }
             }
@@ -124,14 +129,18 @@ export function SectionContextProvider({
 
             return clonedPrevData;
         });
-        addEditFormToComment((prevComments) => prevComments.filter((comment) => comment !== commentId));
+        setCommentsWithEditForm((prevComments) =>
+            prevComments.filter((comment) => comment !== commentId),
+        );
     };
     function searchAndFilterDeletedComment(idToFilter: number, comments: IComment[]): IComment[] {
         if (comments.map((comment) => comment.id).includes(idToFilter)) {
             return comments.filter((comment) => comment.id !== idToFilter);
         }
 
-        const commentsWithReplies = comments.filter((comment) => !!comment.replies?.length);
+        const commentsWithReplies = comments.filter(
+            (comment) => comment.replies !== undefined && comment.replies.length !== 0,
+        );
 
         for (const comment of commentsWithReplies) {
             comment.replies = searchAndFilterDeletedComment(idToFilter, comment.replies!);
@@ -139,8 +148,8 @@ export function SectionContextProvider({
 
         return comments;
     }
-    const onDeleteComment = (commentId: number) => {
-        onUpdateData!((prevData) => {
+    const onDeleteComment = (commentId: number): void => {
+        setData((prevData) => {
             const filteredComments = searchAndFilterDeletedComment(commentId, prevData.comments);
 
             return {
@@ -153,11 +162,12 @@ export function SectionContextProvider({
     return (
         <SectionContext.Provider
             value={{
+                comments: data.comments,
                 currentUser,
                 commentsWithAddForm,
-                addAddFormToComment,
+                setCommentsWithAddForm,
                 commentsWithEditForm,
-                addEditFormToComment,
+                setCommentsWithEditForm,
                 onAddComment,
                 onReplyToComment,
                 onEditComment,

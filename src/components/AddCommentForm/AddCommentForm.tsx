@@ -1,33 +1,36 @@
-import { ChangeEvent, useContext, useState } from 'react';
-import { IComment, IUser } from '../../types/types';
-import style from './AddCommentForm.module.scss';
-import { SectionContext } from '../../contexts/SectionContext';
+import React, { useContext, useState } from "react";
+import type { ChangeEvent } from "react";
+import type { IComment } from "../../types/types";
+import style from "./AddCommentForm.module.scss";
+import { SectionContext } from "../../contexts/SectionContext";
 
 interface IAddACommentForm {
-    currentUser: IUser;
     replyingTo?: IComment;
     containerWidth?: number;
 }
 
-export function AddACommentForm({ currentUser, replyingTo, containerWidth = 580 }: IAddACommentForm) {
-    const [comment, setComment] = useState('');
+export function AddACommentForm({
+    replyingTo,
+    containerWidth = 580,
+}: IAddACommentForm): React.JSX.Element {
+    const [comment, setComment] = useState("");
 
-    const { onAddComment, onReplyToComment } = useContext(SectionContext);
+    const { currentUser, onAddComment, onReplyToComment } = useContext(SectionContext);
 
-    const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>): void => {
         setComment(event.target.value);
     };
-    const onClickHandler = () => {
-        if (!replyingTo) {
+    const onClickHandler = (): void => {
+        if (replyingTo === undefined) {
             onAddComment!(comment);
         } else {
             onReplyToComment!(replyingTo, comment, currentUser);
         }
-        setComment('');
+        setComment("");
     };
 
     return (
-        <div className={`${style['add-comment-form']}`} style={{ width: containerWidth }}>
+        <div className={`${style["add-comment-form"]}`} style={{ width: containerWidth }}>
             <img src={`/src/assets/images/avatars/image-${currentUser.username}.png`} />
             <textarea placeholder="Add a comment..." value={comment} onChange={onChangeHandler} />
             <button disabled={comment.length === 0} onClick={onClickHandler}>
