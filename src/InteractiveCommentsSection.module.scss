@@ -1,8 +1,10 @@
-@import './sass/variables';
-@import './sass//mixins';
+@import "./sass/variables";
+@import "./sass//mixins";
 
 .interactive-comment-section {
-    @include width-and-height(100dvw, 100dvh);
     @include flex-container(column, center, center, 1.6rem);
+    width: 100dvw;
+    min-height: 100dvh;
     background-color: $very-light-gray;
+    padding: 3.2rem 0rem;
 }

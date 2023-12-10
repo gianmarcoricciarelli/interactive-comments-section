@@ -3,13 +3,13 @@
 
 .confirm-delete-modal {
     @include width-and-height(100dvw, 100dvh);
-    position: absolute;
+    position: fixed;
     top: 0;
     z-index: 1;
     background: rgba($dark-blue, 0.5);
 
     &__dialog {
-        position: absolute;
+        position: fixed;
         left: 50%;
         transform: translate(-50%, -50%);
         @include width-and-height(33rem, 20rem);

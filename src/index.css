@@ -1,5 +1,5 @@
 :root {
-    font-family: 'Rubik', sans-serif;
+    font-family: "Rubik", sans-serif;
 }
 
 * {
@@ -13,9 +13,14 @@ html {
 }
 
 body {
-    width: 100dvw;
-    height: 100dvh;
     font-size: 1.4rem;
     font-weight: 400;
-    position: relative;
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
