@@ -1,14 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SectionContext } from "../../contexts/SectionContext";
 import style from "./ConfirmDeleteModal.module.scss";
 
 export function ConfirmDeleteModal(): React.JSX.Element | null {
     const { modalIsOpen, setModalIsOpen, onDeleteComment, commentToDelete } =
         useContext(SectionContext);
-
-    if (!modalIsOpen) {
-        return null;
-    }
 
     const onClickOnOverlayOrCancelButton = (): void => {
         setModalIsOpen!(false);
@@ -21,6 +17,26 @@ export function ConfirmDeleteModal(): React.JSX.Element | null {
         onDeleteComment!(commentToDelete);
         setModalIsOpen!(false);
     };
+
+    useEffect(() => {
+        const onEscKeyPressedHandler = (event: KeyboardEvent): void => {
+            if (event.code === "Escape" && modalIsOpen) {
+                setModalIsOpen!(false);
+            }
+        };
+
+        if (modalIsOpen) {
+            window.addEventListener("keydown", onEscKeyPressedHandler);
+        }
+
+        return () => {
+            window.removeEventListener("keydown", onEscKeyPressedHandler);
+        };
+    }, [modalIsOpen]);
+
+    if (!modalIsOpen) {
+        return null;
+    }
 
     return (
         <div className={style["confirm-delete-modal"]} onClick={onClickOnOverlayOrCancelButton}>
