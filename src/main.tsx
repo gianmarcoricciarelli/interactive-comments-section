@@ -1,5 +1,6 @@
-import ReactDOM from 'react-dom/client';
-import { InteractiveCommentsSection } from './InteractiveCommentsSection.tsx';
-import './index.css';
+/* eslint-disable react/react-in-jsx-scope */
+import ReactDOM from "react-dom/client";
+import { InteractiveCommentsSection } from "./InteractiveCommentsSection.tsx";
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(<InteractiveCommentsSection />);
+ReactDOM.createRoot(document.getElementById("root")!).render(<InteractiveCommentsSection />);

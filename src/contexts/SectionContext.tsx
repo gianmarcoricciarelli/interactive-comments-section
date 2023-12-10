@@ -2,6 +2,8 @@ import type { CommentsData, IComment, IUser } from "../types/types";
 import type { Dispatch, SetStateAction, ReactNode } from "react";
 import React, { createContext, useState } from "react";
 import dataJson from "../../data.json";
+import { formatDataTimestamps } from "./utilities";
+import { DateTime } from "luxon";
 
 interface ISectionContextDefault {
     currentUser: IUser;
@@ -36,7 +38,7 @@ export const SectionContext = createContext<ISectionContextDefault & ISectionCon
 });
 
 export function SectionContextProvider({ children }: ISectionContextProps): React.JSX.Element {
-    const [data, setData] = useState<CommentsData>(dataJson);
+    const [data, setData] = useState<CommentsData>(formatDataTimestamps(dataJson));
     const [nextCommentId, setNextCommentId] = useState(5);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [commentToDelete, setCommentToDelete] = useState(0);
@@ -71,7 +73,7 @@ export function SectionContextProvider({ children }: ISectionContextProps): Reac
                     id: nextCommentId,
                     user: prevData.currentUser,
                     content: newComment,
-                    createdAt: "Just now",
+                    createdAt: DateTime.now().toLocaleString(),
                     score: 0,
                 },
             ],
@@ -94,7 +96,7 @@ export function SectionContextProvider({ children }: ISectionContextProps): Reac
             const newComment: IComment = {
                 id: nextCommentId,
                 user,
-                createdAt: "Just now",
+                createdAt: DateTime.now().toLocaleString(),
                 content: comment,
                 score: 0,
                 replyingTo: replyingTo.user.username,
