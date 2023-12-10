@@ -1,11 +1,12 @@
 import type { CommentsData, IComment, IUser } from "../types/types";
 import type { Dispatch, SetStateAction, ReactNode } from "react";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import dataJson from "../../data.json";
 import { formatDataTimestamps } from "./utilities";
 import { DateTime } from "luxon";
 
 interface ISectionContextDefault {
+    bodyWidth: number;
     currentUser: IUser;
     comments: IComment[];
     commentsWithAddForm: number[];
@@ -29,6 +30,7 @@ interface ISectionContextProps {
 }
 
 export const SectionContext = createContext<ISectionContextDefault & ISectionContextCallbacks>({
+    bodyWidth: window.innerWidth,
     currentUser: dataJson.currentUser,
     comments: dataJson.comments,
     commentsWithAddForm: [],
@@ -38,6 +40,7 @@ export const SectionContext = createContext<ISectionContextDefault & ISectionCon
 });
 
 export function SectionContextProvider({ children }: ISectionContextProps): React.JSX.Element {
+    const [bodyWidth, setBodyWidth] = useState<number>(window.innerWidth);
     const [data, setData] = useState<CommentsData>(formatDataTimestamps(dataJson));
     const [nextCommentId, setNextCommentId] = useState(5);
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -161,9 +164,23 @@ export function SectionContextProvider({ children }: ISectionContextProps): Reac
         });
     };
 
+    const onBodyResizeHandler = (entries: ResizeObserverEntry[]): void => {
+        setBodyWidth(entries[0].contentRect.width);
+    };
+
+    useEffect(() => {
+        const observer = new ResizeObserver(onBodyResizeHandler);
+        observer.observe(document.body);
+
+        return () => {
+            observer.unobserve(document.body);
+        };
+    }, []);
+
     return (
         <SectionContext.Provider
             value={{
+                bodyWidth,
                 comments: data.comments,
                 currentUser,
                 commentsWithAddForm,
