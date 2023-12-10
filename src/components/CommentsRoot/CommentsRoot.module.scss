@@ -1,10 +1,12 @@
-@import '../../sass/variables';
-@import '../../sass//mixins';
+@import "../../sass/variables";
+@import "../../sass//mixins";
 
 .comments-root {
+    width: 58rem;
     @include flex-container(column, center, center, 1.6rem);
 
     &__replies-container {
+        width: 58rem;
         @include flex-container(row, flex-end, flex-start, 2.6rem);
 
         .replies-container__line {
@@ -15,6 +17,16 @@
 
         .replies-container__replies {
             @include flex-container(column, flex-start, flex-end, 1.6rem);
+        }
+    }
+}
+
+@media screen and (max-width: 37.5rem) {
+    .comments-root {
+        width: 31rem;
+
+        &__replies-container {
+            width: 31rem;
         }
     }
 }

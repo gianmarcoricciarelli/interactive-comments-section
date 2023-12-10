@@ -7,15 +7,14 @@ import { SectionContext } from "../../../contexts/SectionContext";
 
 export interface CommentInterface {
     comment: IComment;
-    containerWidth: number;
 }
 
-export function Comment({ comment, containerWidth }: CommentInterface): React.JSX.Element {
-    const { currentUser } = useContext(SectionContext);
+export function Comment({ comment }: CommentInterface): React.JSX.Element {
+    const { bodyWidth, currentUser } = useContext(SectionContext);
 
     return (
-        <div className={style.comment} style={{ width: containerWidth }}>
-            <ReactionCounter score={comment.score} />
+        <div className={style.comment}>
+            {bodyWidth > 375 && <ReactionCounter score={comment.score} />}
             <Content currentUserName={currentUser.username} comment={comment} />
         </div>
     );

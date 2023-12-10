@@ -1,5 +1,5 @@
-@import '../../../sass/mixins';
-@import '../../../sass/variables';
+@import "../../../sass/mixins";
+@import "../../../sass/variables";
 
 .comment {
     height: 14rem;
@@ -7,4 +7,10 @@
     background-color: $white;
     padding: 2rem 2rem 0rem 2rem;
     border-radius: 0.7rem;
+}
+
+@media screen and (max-width: 37.5rem) {
+    .comment {
+        height: 23.6rem;
+    }
 }

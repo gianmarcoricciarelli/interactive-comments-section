@@ -51,3 +51,19 @@
         }
     }
 }
+
+@media screen and (max-width: 37.5rem) {
+    .add-comment-form {
+        @include width-and-height(31rem, 17.5rem);
+        flex-direction: column;
+
+        textarea {
+            width: 100%;
+        }
+
+        &__mobile {
+            width: 100%;
+            @include flex-container(row, space-between, center);
+        }
+    }
+}

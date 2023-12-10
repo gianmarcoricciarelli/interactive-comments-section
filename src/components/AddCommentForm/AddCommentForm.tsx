@@ -6,16 +6,12 @@ import { SectionContext } from "../../contexts/SectionContext";
 
 interface IAddACommentForm {
     replyingTo?: IComment;
-    containerWidth?: number;
 }
 
-export function AddACommentForm({
-    replyingTo,
-    containerWidth = 580,
-}: IAddACommentForm): React.JSX.Element {
+export function AddACommentForm({ replyingTo }: IAddACommentForm): React.JSX.Element {
     const [comment, setComment] = useState("");
 
-    const { currentUser, onAddComment, onReplyToComment } = useContext(SectionContext);
+    const { bodyWidth, currentUser, onAddComment, onReplyToComment } = useContext(SectionContext);
 
     const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>): void => {
         setComment(event.target.value);
@@ -30,12 +26,24 @@ export function AddACommentForm({
     };
 
     return (
-        <div className={`${style["add-comment-form"]}`} style={{ width: containerWidth }}>
-            <img src={`/src/assets/images/avatars/image-${currentUser.username}.png`} />
+        <div className={`${style["add-comment-form"]}`}>
+            {bodyWidth > 375 && (
+                <img src={`/src/assets/images/avatars/image-${currentUser.username}.png`} />
+            )}
             <textarea placeholder="Add a comment..." value={comment} onChange={onChangeHandler} />
-            <button disabled={comment.length === 0} onClick={onClickHandler}>
-                SEND
-            </button>
+            {bodyWidth <= 375 && (
+                <div className={style["add-comment-form__mobile"]}>
+                    <img src={`/src/assets/images/avatars/image-${currentUser.username}.png`} />
+                    <button disabled={comment.length === 0} onClick={onClickHandler}>
+                        SEND
+                    </button>
+                </div>
+            )}
+            {bodyWidth > 375 && (
+                <button disabled={comment.length === 0} onClick={onClickHandler}>
+                    SEND
+                </button>
+            )}
         </div>
     );
 }

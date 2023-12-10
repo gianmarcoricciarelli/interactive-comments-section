@@ -11,7 +11,7 @@ interface IContent {
 }
 
 export function Content({ currentUserName, comment }: IContent): React.JSX.Element {
-    const { commentsWithEditForm } = useContext(SectionContext);
+    const { bodyWidth, commentsWithEditForm } = useContext(SectionContext);
 
     return (
         <div className={style.content}>
@@ -26,10 +26,12 @@ export function Content({ currentUserName, comment }: IContent): React.JSX.Eleme
                     )}
                     <p>{comment.createdAt}</p>
                 </div>
-                <CallToActions
-                    isOwnComment={currentUserName === comment.user.username}
-                    comment={comment}
-                />
+                {bodyWidth > 375 && (
+                    <CallToActions
+                        isOwnComment={currentUserName === comment.user.username}
+                        comment={comment}
+                    />
+                )}
             </div>
             <div className={style["content__text-container"]}>
                 {commentsWithEditForm.includes(comment.id) ? (
