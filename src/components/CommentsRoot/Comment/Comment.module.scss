@@ -12,5 +12,13 @@
 @media screen and (max-width: 37.5rem) {
     .comment {
         height: 23.6rem;
+        @include flex-container(column, space-between, flex-start);
+        padding: 1.2rem 2rem;
+        gap: 0rem;
+
+        &__mobile-counter-and-ctas {
+            width: 100%;
+            @include flex-container(row, space-between, center);
+        }
     }
 }

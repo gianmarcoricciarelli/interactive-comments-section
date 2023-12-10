@@ -1,5 +1,5 @@
-@import '../../../../sass/variables';
-@import '../../../../sass/mixins';
+@import "../../../../sass/variables";
+@import "../../../../sass/mixins";
 
 .reaction-counter {
     @include flex-container(column, space-evenly, center);
@@ -15,7 +15,7 @@
             @include width-and-height(0.8rem, 0.8rem);
         }
 
-        img[src='/src/assets/images/icon-minus.svg'] {
+        img[src="/src/assets/images/icon-minus.svg"] {
             @include width-and-height(0.8rem, 0.3rem);
         }
 
@@ -26,5 +26,12 @@
 
     &__count {
         color: $moderate-blue;
+    }
+}
+
+@media screen and (max-width: 37.5rem) {
+    .reaction-counter {
+        @include flex-container(row, space-evenly, center);
+        @include width-and-height(9rem, 4rem);
     }
 }
