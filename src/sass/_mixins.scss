@@ -13,3 +13,9 @@
         gap: $gap;
     }
 }
+
+@mixin center-respect-to-viewport {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

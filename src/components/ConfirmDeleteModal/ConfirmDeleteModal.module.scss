@@ -2,16 +2,14 @@
 @import "../../sass/variables";
 
 .confirm-delete-modal {
-    @include width-and-height(100dvw, 100dvh);
     position: fixed;
+    @include width-and-height(100dvw, 100dvh);
     top: 0;
     z-index: 1;
     background: rgba($dark-blue, 0.5);
 
     &__dialog {
-        position: fixed;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        @include center-respect-to-viewport;
         @include width-and-height(33rem, 20rem);
         @include flex-container(column, center, center, 1.2rem);
         padding: 0rem 2rem;
